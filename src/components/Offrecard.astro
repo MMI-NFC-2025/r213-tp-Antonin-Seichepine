@@ -1,0 +1,19 @@
+---
+const { offre } = Astro.props;
+---
+
+<article class="rounded-xl border p-4 shadow-sm">
+    <h2 class="text-lg font-semibold">{offre.nomMaison}</h2>
+    <p class="text-sm text-slate-600">{offre.adresse}</p>
+
+    <div class="mt-3 flex flex-wrap gap-3 text-sm">
+        <span>{offre.nbChambres} chambres</span>
+        <span>{offre.nbSdb} sdb</span>
+        <span>{offre.surface} m²</span>
+        <span class="font-semibold">{offre.prix} €</span>
+    </div>
+
+    <p class="mt-2 text-xs">
+        Favori : <strong>{offre.favori ? "Oui" : "Non"}</strong>
+    </p>
+</article>

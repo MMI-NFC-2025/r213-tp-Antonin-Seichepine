@@ -1,5 +1,7 @@
 ---
 import Layout from "../layouts/Layout.astro";
+import Offrecard from "../components/Offrecard.astro";
+
 const offres = [
     {
         adresse: "2821 Lake Sevilla, Palm Harbor, TX",
@@ -39,9 +41,7 @@ const offres = [
 
 <Layout titre="Offres">
     <h1>Offres</h1>
-    <div>
-        <ul>
-            {offres.map((offre) => <li>{offre.nomMaison}</li>)}
-        </ul>
+    <div class="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+        {offres.map((offre) => <Offrecard offre={offre} />)}
     </div>
-</Layout>
+</Layout>;
