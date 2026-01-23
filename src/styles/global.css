@@ -1,1 +1,9 @@
 @import "tailwindcss";
+
+h1 {
+    text-align: center;
+    text-transform: uppercase;
+    font-weight: 700;
+    font-size: 3rem;
+    color: #1e1b4b;
+}
