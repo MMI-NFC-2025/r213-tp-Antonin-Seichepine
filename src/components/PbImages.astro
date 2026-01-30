@@ -4,8 +4,8 @@ import { getImageUrl } from "../backend.mjs";
 const {
     record,
     imageField,
-    width = 400, // valeur par défaut (TP)
-    height = 300, // valeur par défaut (TP)
+    width = 400, // valeur par défaut 
+    height = 300, // valeur par défaut 
 } = Astro.props;
 
 const imageURL = await getImageUrl(record, imageField);
