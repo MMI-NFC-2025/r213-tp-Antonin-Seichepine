@@ -7,16 +7,41 @@ const offres = await getOffres();
 ---
 
 <Layout titre="Offres">
-    <h1>Offres</h1>
+    <h1 class="text-xl font-semibold">Offres</h1>
 
-    <button id="favori-button" class="bg-indigo-800 rounded-lg text-white p-2">
-        Afficher les favoris
-    </button>
+    <div class="mt-4 flex flex-wrap items-center gap-3">
+        <button
+            id="favori-button"
+            class="rounded-lg bg-indigo-800 px-4 py-2 font-semibold text-white"
+        >
+            Afficher les favoris
+        </button>
 
-    <div class="mt-6 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+        <div class="flex items-center gap-2">
+            <button
+                id="prev"
+                type="button"
+                class="rounded-lg bg-slate-200 px-3 py-2 font-semibold text-indigo-950"
+            >
+                ←
+            </button>
+            <button
+                id="next"
+                type="button"
+                class="rounded-lg bg-slate-200 px-3 py-2 font-semibold text-indigo-950"
+            >
+                →
+            </button>
+        </div>
+    </div>
+
+    <div id="offres-rail" class="mt-6 flex gap-6 overflow-x-auto pb-4">
         {
             offres.map((offre) => (
-                <div class="offre" data-favori={offre.favori.toString()}>
+                <div
+                    class="offre w-96 flex-shrink-0"
+                    data-favori={offre.favori.toString()}
+                >
                     <Offrecard offre={offre} />
                 </div>
             ))
@@ -25,8 +50,23 @@ const offres = await getOffres();
 </Layout>
 
 <script>
+    const rail = document.getElementById("offres-rail");
+    const prev = document.getElementById("prev");
+    const next = document.getElementById("next");
+
     const button = document.getElementById("favori-button");
     let showOnlyFavorites = false;
+
+    // Scroll d'une card (w-96 = 384px) + gap-6 (24px) => 408
+    const step = 408;
+
+    prev?.addEventListener("click", () => {
+        rail?.scrollBy({ left: -step, behavior: "smooth" });
+    });
+
+    next?.addEventListener("click", () => {
+        rail?.scrollBy({ left: step, behavior: "smooth" });
+    });
 
     button?.addEventListener("click", () => {
         showOnlyFavorites = !showOnlyFavorites;

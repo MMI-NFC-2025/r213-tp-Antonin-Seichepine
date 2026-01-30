@@ -1,8 +1,14 @@
 ---
 import { getImageUrl } from "../backend.mjs";
 
-const { record, imageField, width = 400, height = 300 } = Astro.props;
-const imageURL = getImageUrl(record, imageField);
+const {
+    record,
+    imageField,
+    width = 400, // valeur par défaut (TP)
+    height = 300, // valeur par défaut (TP)
+} = Astro.props;
+
+const imageURL = await getImageUrl(record, imageField);
 ---
 
 {
@@ -13,6 +19,7 @@ const imageURL = getImageUrl(record, imageField);
             width={width}
             height={height}
             loading="lazy"
+            class="pb-image block w-full object-cover"
         />
     )
 }
