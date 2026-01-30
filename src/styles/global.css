@@ -7,3 +7,10 @@ h1 {
     font-size: 3rem;
     color: #1e1b4b;
 }
+
+.offre-card img {
+    width: 100%;
+    height: 250px;
+    object-fit: cover;
+    display: block;
+}
