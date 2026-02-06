@@ -1,0 +1,30 @@
+---
+import Layout from "../../../layouts/Layout.astro";
+import Offrecard from "../../../components/Offrecard.astro";
+import { PrixInferieur } from "../../../backend.mjs";
+
+const offres = await PrixInferieur();
+---
+
+<Layout titre="Maisons - de 100 000 €">
+    <h1 class="text-xl font-semibold">Maisons à moins de 100 000 €</h1>
+
+    <div class="mt-4">
+        <a
+            href="/offres"
+            class="rounded-lg bg-indigo-800 px-4 py-2 font-semibold text-white inline-block"
+        >
+            ← Retour aux offres
+        </a>
+    </div>
+
+    <div class="mt-6 flex gap-6 overflow-x-auto pb-4">
+        {
+            offres.map((offre) => (
+                <div class="w-96 flex-shrink-0">
+                    <Offrecard offre={offre} />
+                </div>
+            ))
+        }
+    </div>
+</Layout>

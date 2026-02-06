@@ -41,3 +41,15 @@ export async function getOffresSurface50() {
         return [];
     }
 }
+
+export async function PrixInferieur() {
+    try {
+        return await pb.collection("maison").getFullList({
+            filter: "prix < 100000",
+            sort: "-created",
+        });
+    } catch (error) {
+        console.log("Erreur prix < 100000", error);
+        return [];
+    }
+}

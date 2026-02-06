@@ -18,12 +18,21 @@ const offres = await getOffres();
             Afficher les favoris
         </button>
 
-        <a
-            href="/offres/surface/50"
+        <button
+            id="surface50-button"
             class="rounded-lg bg-indigo-800 px-4 py-2 font-semibold text-white"
+            type="button"
         >
             + de 50 m²
-        </a>
+        </button>
+
+        <button
+            id="prix100k-button"
+            class="rounded-lg bg-indigo-800 px-4 py-2 font-semibold text-white"
+            type="button"
+        >
+            - de 100 000 €
+        </button>
     </div>
 
     <div id="offres-rail" class="mt-6 flex gap-6 overflow-x-auto pb-4">
@@ -32,6 +41,8 @@ const offres = await getOffres();
                 <div
                     class="offre w-96 flex-shrink-0"
                     data-favori={offre.favori?.toString() ?? "false"}
+                    data-surface={offre.surface?.toString() ?? "0"}
+                    data-prix={offre.prix?.toString() ?? "0"}
                 >
                     <Offrecard offre={offre} />
                 </div>
@@ -41,38 +52,49 @@ const offres = await getOffres();
 </Layout>
 
 <script>
-    const rail = document.getElementById("offres-rail");
-    const prev = document.getElementById("prev");
-    const next = document.getElementById("next");
+    const wrappers = document.querySelectorAll(".offre");
 
-    const button = document.getElementById("favori-button");
+    const favoriBtn = document.getElementById("favori-button");
+    const surfaceBtn = document.getElementById("surface50-button");
+    const prixBtn = document.getElementById("prix100k-button");
+
     let showOnlyFavorites = false;
+    let showSurface50 = false;
+    let showPrix100k = false;
 
-    const step = 408;
+    function applyFilters() {
+        wrappers.forEach((wrap) => {
+            const isFavori = wrap.dataset.favori === "true";
+            const surface = Number(wrap.dataset.surface || "0");
+            const prix = Number(wrap.dataset.prix || "0");
 
-    prev?.addEventListener("click", () => {
-        rail?.scrollBy({ left: -step, behavior: "smooth" });
-    });
+            const okFavori = showOnlyFavorites ? isFavori : true;
+            const okSurface = showSurface50 ? surface > 50 : true;
+            const okPrix = showPrix100k ? prix < 100000 : true;
 
-    next?.addEventListener("click", () => {
-        rail?.scrollBy({ left: step, behavior: "smooth" });
-    });
-
-    button?.addEventListener("click", () => {
-        showOnlyFavorites = !showOnlyFavorites;
-        const offres = document.querySelectorAll(".offre");
-
-        offres.forEach((offre) => {
-            const isFavori = offre.dataset.favori === "true";
-
-            if (showOnlyFavorites) {
-                offre.style.display = isFavori ? "block" : "none";
-                button.textContent = "Afficher tout";
-            } else {
-                offre.style.display = "block";
-                button.textContent = "Afficher les favoris";
-            }
+            wrap.style.display =
+                okFavori && okSurface && okPrix ? "block" : "none";
         });
+    }
+
+    favoriBtn?.addEventListener("click", () => {
+        showOnlyFavorites = !showOnlyFavorites;
+        favoriBtn.textContent = showOnlyFavorites
+            ? "Afficher tout"
+            : "Afficher les favoris";
+        applyFilters();
+    });
+
+    surfaceBtn?.addEventListener("click", () => {
+        showSurface50 = !showSurface50;
+        surfaceBtn.textContent = showSurface50 ? "Afficher tout" : "+ de 50 m²";
+        applyFilters();
+    });
+
+    prixBtn?.addEventListener("click", () => {
+        showPrix100k = !showPrix100k;
+        prixBtn.textContent = showPrix100k ? "Afficher tout" : "- de 100 000 €";
+        applyFilters();
     });
 
     const cards = document.querySelectorAll(".offre-card");
@@ -99,10 +121,7 @@ const offres = await getOffres();
             const wrapper = card.closest(".offre");
             if (wrapper) wrapper.dataset.favori = card.dataset.favori;
 
-            if (showOnlyFavorites && wrapper) {
-                wrapper.style.display =
-                    card.dataset.favori === "true" ? "block" : "none";
-            }
+            applyFilters();
         });
     });
 </script>

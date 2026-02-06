@@ -1,18 +1,42 @@
 ---
-import { getOffre } from "../../backend.mjs";
+import { getOffre, getImageUrl } from "../../backend.mjs";
 import Layout from "../../layouts/Layout.astro";
 
 const { id } = Astro.params;
 const offre = await getOffre(id);
+
+const imageUrl = getImageUrl(offre, "images");
 ---
 
 <Layout titre={offre.nomMaison}>
-    <h2>{offre.nomMaison}</h2>
-    <ul>
-        <li>{offre.adresse}</li>
-        <li>{offre.prix} €</li>
-        <li>{offre.surface} m²</li>
-        <li>{offre.nbChambres} chambres</li>
-        <li>{offre.nbSdb} salles de bain</li>
-    </ul>
+    <div class="flex flex-col items-center text-center">
+        {
+            imageUrl && (
+                <img
+                    src={imageUrl}
+                    alt={`Photo de ${offre.nomMaison}`}
+                    class="mb-4 h-100 w-100 rounded-lg object-cover"
+                />
+            )
+        }
+
+        <h2 class="mb-4 text-2xl font-semibold">
+            {offre.nomMaison}
+        </h2>
+
+        <ul class="mb-6 space-y-1 text-slate-700">
+            <li><strong>Adresse :</strong> {offre.adresse}</li>
+            <li><strong>Prix :</strong> {offre.prix} €</li>
+            <li><strong>Surface :</strong> {offre.surface} m²</li>
+            <li><strong>Chambres :</strong> {offre.nbChambres}</li>
+            <li><strong>Salles de bain :</strong> {offre.nbSdb}</li>
+        </ul>
+
+        <a
+            href="/offres"
+            class="rounded-lg bg-indigo-800 px-4 py-2 font-semibold text-white"
+        >
+            ← Retour aux offres
+        </a>
+    </div>
 </Layout>
