@@ -27,4 +27,5 @@ const { offre } = Astro.props;
     <div class="mt-4">
         <PbImages record={offre} imageField="images" width={400} height={250} />
     </div>
+    <div><a href={`/offres/${offre.id}`}>Voir plus</a></div>
 </article>
