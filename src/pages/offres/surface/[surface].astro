@@ -1,0 +1,40 @@
+---
+import Layout from "../../../layouts/Layout.astro";
+import Offrecard from "../../../components/Offrecard.astro";
+import { getOffresSurface50 } from "../../../backend.mjs";
+
+const { surface } = Astro.params;
+
+const offres = await getOffresSurface50();
+---
+
+<Layout titre="Maisons de plus de 50 m²">
+    <h1 class="text-xl font-semibold">Maisons de plus de 50 m²</h1>
+
+    <!-- Boutons -->
+    <div
+        class="class="
+        rounded-lg
+        bg-indigo-800
+        px-4
+        py-2
+        font-semibold
+        text-white"
+    >
+        <a
+            href="/offres"
+            class="rounded-lg bg-indigo-800 px-4 py-2 font-semibold text-white"
+        >
+            ← Toutes les offres
+        </a>
+    </div>
+    <div id="offres-rail" class="mt-6 flex gap-6 overflow-x-auto pb-4">
+        {
+            offres.map((offre) => (
+                <div class="offre w-96 flex-shrink-0">
+                    <Offrecard offre={offre} />
+                </div>
+            ))
+        }
+    </div>
+</Layout>

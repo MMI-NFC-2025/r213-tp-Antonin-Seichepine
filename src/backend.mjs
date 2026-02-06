@@ -26,6 +26,18 @@ export async function getOffre(id) {
         return data;
     } catch (error) {
         console.log("Une erreur est survenue en lisant la maison", error);
-        return null;
+        return [];
+    }
+}
+
+export async function getOffresSurface50() {
+    try {
+        return await pb.collection("maison").getFullList({
+            filter: "surface > 50",
+            sort: "-created",
+        });
+    } catch (error) {
+        console.log("Erreur surface > 50", error);
+        return [];
     }
 }

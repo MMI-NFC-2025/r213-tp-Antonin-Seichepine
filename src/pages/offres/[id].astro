@@ -10,6 +10,9 @@ const offre = await getOffre(id);
     <h2>{offre.nomMaison}</h2>
     <ul>
         <li>{offre.adresse}</li>
-        ...
+        <li>{offre.prix} €</li>
+        <li>{offre.surface} m²</li>
+        <li>{offre.nbChambres} chambres</li>
+        <li>{offre.nbSdb} salles de bain</li>
     </ul>
 </Layout>

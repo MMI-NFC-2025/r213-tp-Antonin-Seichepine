@@ -13,26 +13,17 @@ const offres = await getOffres();
         <button
             id="favori-button"
             class="rounded-lg bg-indigo-800 px-4 py-2 font-semibold text-white"
+            type="button"
         >
             Afficher les favoris
         </button>
 
-        <div class="flex items-center gap-2">
-            <button
-                id="prev"
-                type="button"
-                class="rounded-lg bg-slate-200 px-3 py-2 font-semibold text-indigo-950"
-            >
-                ←
-            </button>
-            <button
-                id="next"
-                type="button"
-                class="rounded-lg bg-slate-200 px-3 py-2 font-semibold text-indigo-950"
-            >
-                →
-            </button>
-        </div>
+        <a
+            href="/offres/surface/50"
+            class="rounded-lg bg-indigo-800 px-4 py-2 font-semibold text-white"
+        >
+            + de 50 m²
+        </a>
     </div>
 
     <div id="offres-rail" class="mt-6 flex gap-6 overflow-x-auto pb-4">
@@ -40,7 +31,7 @@ const offres = await getOffres();
             offres.map((offre) => (
                 <div
                     class="offre w-96 flex-shrink-0"
-                    data-favori={offre.favori.toString()}
+                    data-favori={offre.favori?.toString() ?? "false"}
                 >
                     <Offrecard offre={offre} />
                 </div>
@@ -57,7 +48,6 @@ const offres = await getOffres();
     const button = document.getElementById("favori-button");
     let showOnlyFavorites = false;
 
-    // Scroll d'une card (w-96 = 384px) + gap-6 (24px) => 408
     const step = 408;
 
     prev?.addEventListener("click", () => {
