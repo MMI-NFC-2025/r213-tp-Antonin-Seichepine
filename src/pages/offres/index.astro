@@ -1,11 +1,35 @@
 ---
-import Layout from "../../layouts/Layout.astro";
-import Offrecard from "../../components/Offrecard.astro";
-import { getOffres } from "../../backend.mjs";
+import { getOffres, filterByPrix } from "../../backend.mjs"; // adapte le chemin si besoin
 
-const offres = await getOffres();
+let Offres = [];
+let message = "";
+
+if (Astro.request.method === "POST") {
+    const data = await Astro.request.formData();
+    const minPrix = parseInt(data.get("minPrix"));
+    const maxPrix = parseInt(data.get("maxPrix"));
+
+    if (minPrix > 0 && maxPrix > 0 && maxPrix > minPrix) {
+        Offres = await filterByPrix(minPrix, maxPrix);
+        if (Offres.length === 0) {
+            message = `Pas d'offres entre ${minPrix}€ et ${maxPrix}€`;
+        } else {
+            message = `Liste des offres entre ${minPrix}€ et ${maxPrix}€`;
+        }
+    } else {
+        message = "Veuillez entrer des valeurs valides pour le prix.";
+        Offres = await getOffres(); // optionnel mais utile
+    }
+} else {
+    Offres = await getOffres();
+}
 ---
 
+<form action="/offres" method="POST">
+    <input type="number" name="minPrix" placeholder="Prix minimum" />
+    <input type="number" name="maxPrix" placeholder="Prix maximum" />
+    <input type="submit" value="Filtrer par prix" />
+</form>
 <Layout titre="Offres">
     <h1 class="text-xl font-semibold">Offres</h1>
 
@@ -20,7 +44,7 @@ const offres = await getOffres();
 
         <button
             id="surface50-button"
-            class="rounded-lg bg-indigo-800 px-4 py-2 font-semibold text-white"
+            class="rounded-lg bg-indigo-600 px-4 py-2 font-semibold text-white"
             type="button"
         >
             + de 50 m²
@@ -28,7 +52,7 @@ const offres = await getOffres();
 
         <button
             id="prix100k-button"
-            class="rounded-lg bg-indigo-800 px-4 py-2 font-semibold text-white"
+            class="rounded-lg bg-indigo-600 px-4 py-2 font-semibold text-white"
             type="button"
         >
             - de 100 000 €

@@ -53,3 +53,30 @@ export async function PrixInferieur() {
         return [];
     }
 }
+
+export async function addOffre(house) {
+    try {
+        await pb.collection('maison').create(house);
+        return {
+            success: true,
+            message: 'Offre ajoutee avec succes'
+        };
+    } catch (error) {
+        console.log('Une erreur est survenue en ajoutant la maison', error);
+        return {
+            success: false,
+            message: 'Une erreur est survenue en ajoutant la maison'
+        };
+    }
+}
+export async function filterByPrix(minPrix, maxPrix) {
+    try {
+        return await pb.collection("maison").getFullList({
+            filter: `prix >= ${minPrix} && prix <= ${maxPrix}`,
+            sort: "-created",
+        });
+    } catch (error) {
+        console.log("Erreur filtre prix", error);
+        return [];
+    }
+}
