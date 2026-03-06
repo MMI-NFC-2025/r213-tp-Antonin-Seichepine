@@ -1,7 +1,42 @@
 ---
 import Layout from "../layouts/Layout.astro";
+import Offrecard from "../components/Offrecard.astro";
+import { getFavoris } from "../backend.mjs";
+
+const favoris = await getFavoris();
 ---
 
 <Layout titre="Accueil">
-	<h1>Accueil</h1>
+	<h1 class="mb-8 text-center text-3xl font-bold text-indigo-950">Accueil</h1>
+
+	<section class="mt-10">
+		<div class="mb-6 flex items-center justify-between">
+			<h2 class="text-2xl font-semibold text-indigo-950">
+				Maisons favorites
+			</h2>
+
+			<a
+				href="/offres"
+				class="rounded-lg bg-indigo-800 px-4 py-2 font-semibold text-white"
+			>
+				Voir toutes les offres
+			</a>
+		</div>
+
+		{
+			favoris.length > 0 ? (
+				<div class="flex gap-6 overflow-x-auto pb-4">
+					{favoris.map((offre) => (
+						<div class="min-w-[320px] max-w-[320px] flex-shrink-0">
+							<Offrecard offre={offre} />
+						</div>
+					))}
+				</div>
+			) : (
+				<p class="text-slate-700">
+					Aucune maison favorite pour le moment.
+				</p>
+			)
+		}
+	</section>
 </Layout>
